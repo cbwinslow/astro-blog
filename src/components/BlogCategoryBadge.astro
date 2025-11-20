@@ -1,0 +1,68 @@
+---
+/**
+ * BlogCategoryBadge component - Display category badge with custom styling
+ */
+import type { Category } from "@/types/blog";
+
+interface Props {
+  category: Category | string;
+  variant?: "solid" | "outline" | "subtle";
+  size?: "sm" | "md" | "lg";
+  href?: string;
+}
+
+const { category, variant = "subtle", size = "md", href } = Astro.props;
+
+// Convert string category to basic Category object
+const categoryData: Category =
+  typeof category === "string"
+    ? { id: category, name: category, slug: category }
+    : category;
+
+const variantClasses = {
+  solid: `bg-accent text-background`,
+  outline: `border-2 border-accent text-accent bg-transparent`,
+  subtle: `bg-accent/10 text-accent`,
+};
+
+const sizeClasses = {
+  sm: "px-2 py-0.5 text-xs",
+  md: "px-3 py-1 text-sm",
+  lg: "px-4 py-1.5 text-base",
+};
+
+const baseClasses =
+  "inline-flex items-center rounded-full font-medium transition-colors hover:bg-accent/20";
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
+
+const Element = href ? "a" : "span";
+---
+
+<Element
+  href={href}
+  class={classes}
+  style={categoryData.color
+    ? `--category-color: ${categoryData.color}`
+    : undefined}
+>
+  {categoryData.name}
+</Element>
+
+<style>
+  [style*="--category-color"] {
+    background-color: color-mix(
+      in srgb,
+      var(--category-color) 15%,
+      transparent
+    );
+    color: var(--category-color);
+  }
+
+  [style*="--category-color"]:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--category-color) 25%,
+      transparent
+    );
+  }
+</style>
