@@ -17,7 +17,7 @@ export class BlogPostManager {
    * Get posts by tag
    */
   getPostsByTag(tag: string): CollectionEntry<"blog">[] {
-    return this.posts.filter(post => post.data.tags.includes(tag));
+    return this.posts.filter(post => post.data.tags?.includes(tag) ?? false);
   }
 
   /**
@@ -48,12 +48,18 @@ export class BlogPostManager {
     currentPost: CollectionEntry<"blog">,
     limit: number = 3
   ): RelatedPost[] {
-    const currentTags = currentPost.data.tags;
+    const currentTags = currentPost.data.tags ?? [];
+    
+    // If current post has no tags, return empty array
+    if (currentTags.length === 0) {
+      return [];
+    }
 
     const scoredPosts = this.posts
       .filter(post => post.id !== currentPost.id)
       .map(post => {
-        const commonTags = post.data.tags.filter(tag =>
+        const postTags = post.data.tags ?? [];
+        const commonTags = postTags.filter(tag =>
           currentTags.includes(tag)
         );
         const relevanceScore = commonTags.length / currentTags.length;
@@ -101,7 +107,7 @@ export class BlogPostManager {
       post =>
         post.data.title.toLowerCase().includes(lowerKeyword) ||
         post.data.description.toLowerCase().includes(lowerKeyword) ||
-        post.data.tags.some(tag => tag.toLowerCase().includes(lowerKeyword))
+        (post.data.tags ?? []).some(tag => tag.toLowerCase().includes(lowerKeyword))
     );
   }
 

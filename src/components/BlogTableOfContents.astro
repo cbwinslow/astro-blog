@@ -23,32 +23,37 @@ if (filteredItems.length === 0) return;
   <h2 class="mb-3 text-lg font-semibold">{title}</h2>
   <ul class="space-y-2">
     {
-      filteredItems.map(item => (
-        <li
-          class={`${item.depth > 1 ? `ml-${(item.depth - 1) * 4}` : ""} text-sm`}
-        >
-          <a
-            href={`#${item.slug}`}
-            class="text-accent hover:underline decoration-dashed underline-offset-4"
-          >
-            {item.text}
-          </a>
-          {item.children && item.children.length > 0 && (
-            <ul class="mt-1 space-y-1">
-              {item.children.map(child => (
-                <li class={`ml-${child.depth * 2} text-sm`}>
-                  <a
-                    href={`#${child.slug}`}
-                    class="text-foreground/70 hover:text-accent hover:underline decoration-dashed underline-offset-4"
-                  >
-                    {child.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))
+      filteredItems.map(item => {
+        // Use predefined classes for depth levels
+        const depthClass = item.depth === 2 ? "ml-4" : item.depth === 3 ? "ml-8" : "";
+        return (
+          <li class={`${depthClass} text-sm`}>
+            <a
+              href={`#${item.slug}`}
+              class="text-accent hover:underline decoration-dashed underline-offset-4"
+            >
+              {item.text}
+            </a>
+            {item.children && item.children.length > 0 && (
+              <ul class="mt-1 space-y-1">
+                {item.children.map(child => {
+                  const childDepthClass = child.depth === 2 ? "ml-4" : child.depth === 3 ? "ml-6" : "ml-8";
+                  return (
+                    <li class={`${childDepthClass} text-sm`}>
+                      <a
+                        href={`#${child.slug}`}
+                        class="text-foreground/70 hover:text-accent hover:underline decoration-dashed underline-offset-4"
+                      >
+                        {child.text}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </li>
+        );
+      })
     }
   </ul>
 </nav>
