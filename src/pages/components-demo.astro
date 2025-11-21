@@ -1,0 +1,214 @@
+---
+/**
+ * Demo page showcasing the new blog components
+ */
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import BlogAuthor from "@/components/BlogAuthor.astro";
+import BlogCategoryBadge from "@/components/BlogCategoryBadge.astro";
+import BlogReadingTime from "@/components/BlogReadingTime.astro";
+import BlogTableOfContents from "@/components/BlogTableOfContents.astro";
+import type { Author, Category, ReadingTimeResult, TocItem } from "@/types";
+
+// Sample data
+const author: Author = {
+  name: "Jane Developer",
+  avatar: "/favicon.svg",
+  bio: "Full-stack developer passionate about TypeScript and modern web development",
+  social: {
+    twitter: "janedev",
+    github: "janedev",
+    linkedin: "jane-developer",
+    website: "https://janedev.com",
+  },
+};
+
+const categories: Category[] = [
+  { id: "1", name: "TypeScript", slug: "typescript", color: "#3178c6" },
+  { id: "2", name: "Astro", slug: "astro", color: "#ff5d01" },
+  { id: "3", name: "Web Development", slug: "web-dev", color: "#10b981" },
+];
+
+const readingTime: ReadingTimeResult = {
+  minutes: 8,
+  text: "8 min read",
+  words: 1600,
+};
+
+const tocItems: TocItem[] = [
+  { depth: 1, text: "Introduction", slug: "introduction" },
+  { depth: 2, text: "Getting Started", slug: "getting-started" },
+  { depth: 2, text: "Installation", slug: "installation" },
+  { depth: 1, text: "Components", slug: "components" },
+  { depth: 2, text: "BlogAuthor", slug: "blogauthor" },
+  { depth: 2, text: "BlogCategoryBadge", slug: "blogcategorybadge" },
+  { depth: 2, text: "BlogReadingTime", slug: "blogreadingtime" },
+  { depth: 1, text: "Utilities", slug: "utilities" },
+  { depth: 2, text: "BlogPostManager", slug: "blogpostmanager" },
+  { depth: 2, text: "ContentValidator", slug: "contentvalidator" },
+];
+---
+
+<Layout title="Components Demo" description="Demonstration of new blog components">
+  <Header />
+  <Main pageTitle="Blog Components Demo" pageDesc="Demonstration of new blog components and utilities">
+    <section class="mx-auto max-w-4xl px-4">
+      
+      <p class="mb-8 text-lg text-foreground/80">
+        This page demonstrates all the new robust blog components and utilities
+        available in this template.
+      </p>
+
+      <!-- BlogAuthor Component -->
+      <section class="mb-12">
+        <h2 id="blogauthor" class="mb-4 text-2xl font-bold">BlogAuthor Component</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Small Size</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogAuthor author={author} size="sm" />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Medium Size with Bio</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogAuthor author={author} size="md" showBio />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Large Size with Bio and Social</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogAuthor author={author} size="lg" showBio showSocial />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Simple String Author</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogAuthor author="John Doe" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BlogCategoryBadge Component -->
+      <section class="mb-12">
+        <h2 id="blogcategorybadge" class="mb-4 text-2xl font-bold">BlogCategoryBadge Component</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Different Variants</h3>
+            <div class="flex flex-wrap gap-3 rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogCategoryBadge category={categories[0]} variant="subtle" />
+              <BlogCategoryBadge category={categories[1]} variant="outline" />
+              <BlogCategoryBadge category={categories[2]} variant="solid" />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Different Sizes</h3>
+            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogCategoryBadge category="Small" size="sm" />
+              <BlogCategoryBadge category="Medium" size="md" />
+              <BlogCategoryBadge category="Large" size="lg" />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">With Custom Colors</h3>
+            <div class="flex flex-wrap gap-3 rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              {categories.map(cat => (
+                <BlogCategoryBadge category={cat} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BlogReadingTime Component -->
+      <section class="mb-12">
+        <h2 id="blogreadingtime" class="mb-4 text-2xl font-bold">BlogReadingTime Component</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">With Icon and Word Count</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogReadingTime readingTime={readingTime} />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Without Icon</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogReadingTime readingTime={readingTime} showIcon={false} />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Simple String</h3>
+            <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-4">
+              <BlogReadingTime readingTime="5 min read" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BlogTableOfContents Component -->
+      <section class="mb-12">
+        <h2 id="blogtableofcontents" class="mb-4 text-2xl font-bold">BlogTableOfContents Component</h2>
+        <BlogTableOfContents items={tocItems} />
+      </section>
+
+      <!-- Combined Example -->
+      <section class="mb-12">
+        <h2 id="combined" class="mb-4 text-2xl font-bold">Combined Example</h2>
+        <div class="rounded-lg border border-foreground/10 bg-foreground/5 p-6">
+          <h3 class="mb-4 text-xl font-semibold">Sample Blog Post Header</h3>
+          
+          <div class="mb-4">
+            <h4 class="text-2xl font-bold">Building Modern Web Applications with TypeScript</h4>
+          </div>
+
+          <div class="mb-4 flex flex-wrap gap-2">
+            {categories.map(cat => (
+              <BlogCategoryBadge category={cat} size="sm" />
+            ))}
+          </div>
+
+          <div class="flex flex-wrap items-center gap-6">
+            <BlogAuthor author={author} size="sm" />
+            <BlogReadingTime readingTime={readingTime} />
+            <span class="text-sm text-foreground/70">Jan 15, 2025</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Documentation Link -->
+      <section class="mb-12">
+        <div class="rounded-lg border border-accent/20 bg-accent/5 p-6">
+          <h2 class="mb-2 text-xl font-bold">📚 Full Documentation</h2>
+          <p class="mb-4 text-foreground/80">
+            For complete documentation on all components, utilities, and TypeScript types,
+            please refer to the <code class="rounded bg-foreground/10 px-2 py-1">COMPONENTS_GUIDE.md</code> file.
+          </p>
+          <div class="space-y-2 text-sm">
+            <p><strong>Location:</strong> <code>/COMPONENTS_GUIDE.md</code></p>
+            <p><strong>Includes:</strong></p>
+            <ul class="ml-6 list-disc space-y-1">
+              <li>Complete API documentation for all components</li>
+              <li>TypeScript interfaces and types</li>
+              <li>Utility classes (BlogPostManager, ContentValidator, etc.)</li>
+              <li>Usage examples and best practices</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </Main>
+  <Footer />
+</Layout>

@@ -1,0 +1,28 @@
+---
+/**
+ * BlogRelatedPosts component - Display related posts
+ */
+import type { RelatedPost } from "@/types/blog";
+import Card from "./Card.astro";
+
+interface Props {
+  relatedPosts: RelatedPost[];
+  title?: string;
+}
+
+const { relatedPosts, title = "Related Posts" } = Astro.props;
+
+// Don't render if no related posts
+if (relatedPosts.length === 0) return;
+---
+
+<section class="my-8">
+  <h2 class="mb-4 text-2xl font-bold">{title}</h2>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      relatedPosts.map(({ post }) => (
+        <Card {...post} variant="h3" />
+      ))
+    }
+  </ul>
+</section>

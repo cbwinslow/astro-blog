@@ -1,0 +1,49 @@
+---
+/**
+ * BlogReadingTime component - Display estimated reading time
+ */
+import type { ReadingTimeResult } from "@/types/blog";
+
+interface Props {
+  readingTime: ReadingTimeResult | string;
+  showIcon?: boolean;
+  className?: string;
+}
+
+const { readingTime, showIcon = true, className = "" } = Astro.props;
+
+// Convert string to ReadingTimeResult if needed
+const readingTimeData: ReadingTimeResult =
+  typeof readingTime === "string"
+    ? { minutes: 0, text: readingTime, words: 0 }
+    : readingTime;
+---
+
+<div class={`flex items-center gap-1.5 text-sm text-foreground/70 ${className}`}>
+  {
+    showIcon && (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="size-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    )
+  }
+  <span>{readingTimeData.text}</span>
+  {
+    readingTimeData.words > 0 && (
+      <span class="text-xs text-foreground/50">
+        ({readingTimeData.words} words)
+      </span>
+    )
+  }
+</div>
